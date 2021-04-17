@@ -17,8 +17,8 @@ firebase_admin.initialize_app(cred)
 
 # Flask
 app = Flask(__name__)
-@app.route('/', methods=['POST']) #Using post as a method
-#@app.route('/')
+#@app.route('/', methods=['POST']) #Using post as a method
+@app.route('/')
 
 def MainFunction():
     return "Noomfuu Hello"
