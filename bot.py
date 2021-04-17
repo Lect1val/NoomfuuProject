@@ -33,7 +33,7 @@ def MainFunction():
     r.headers['Content-Type'] = 'application/json' #Setting Content Type
 
     return r
-    # return "Noomfuu Hello"
+    # return "Noomfuu Hello
 
 def generating_answer(question_from_dailogflow_dict):
     
@@ -56,6 +56,7 @@ def generating_answer(question_from_dailogflow_dict):
     answer_from_bot = json.dumps(answer_from_bot, indent=4) 
     
     return answer_from_bot
+
 
 #Flask
 if __name__ == '__main__':
