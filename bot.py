@@ -24,6 +24,7 @@ def MainFunction():
 
     #Getting intent from Dailogflow
     question_from_dailogflow_raw = request.get_json(silent=True, force=True)
+    user_text = question_from_dailogflow_raw["queryResult"]
 
     #Call generating_answer function to classify the question
     answer_from_bot = generating_answer(question_from_dailogflow_raw)
@@ -32,8 +33,8 @@ def MainFunction():
     r = make_response(answer_from_bot)
     r.headers['Content-Type'] = 'application/json' #Setting Content Type
 
-    return r
-    # return "Noomfuu Hello"
+    #return r
+    return user_text
 
 def generating_answer(question_from_dailogflow_dict):
     
@@ -42,11 +43,9 @@ def generating_answer(question_from_dailogflow_dict):
 
     #Getting intent name form intent that recived from dialogflow.
     intent_group_question_str = question_from_dailogflow_dict["queryResult"]["intent"]["displayName"] 
-
     #Select function for answering question
-    if intent_group_question_str == 'Test Intent':
-         answer_str = "ทดสอบสำเร็จ"
-        #  useSentiment(question_from_dailogflow_dict)
+    if intent_group_question_str == 'NegativeEmotion - yes - want':
+        answer_str = follow_up_NegativeEmotion_problem(question_from_dailogflow_dict)
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
 
     #Build answer dict 
@@ -56,6 +55,14 @@ def generating_answer(question_from_dailogflow_dict):
     answer_from_bot = json.dumps(answer_from_bot, indent=4) 
     
     return answer_from_bot
+
+def follow_up_NegativeEmotion_problem(problem_from_user):
+    user_problem = problem_from_user["queryText"]
+    print("chat response(user problem)" + user_problem)
+    function_answer = "นุ่มฟูเข้าใจว่าคุณคงเหนื่อยมากใช่ไหม แต่ไม่เป็นไรนะ พักบ้างก็ได้ นุ่มฟูเป็นกำลังใจให้นะ"
+    return function_answer
+
+
 
 #Flask
 if __name__ == '__main__':
