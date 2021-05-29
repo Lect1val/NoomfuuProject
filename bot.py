@@ -43,21 +43,26 @@ def generating_answer(question_from_dailogflow_dict):
 
     #Getting intent name form intent that recived from dialogflow.
     intent_group_question_str = question_from_dailogflow_dict["queryResult"]["intent"]["displayName"] 
+    print(intent_group_question_str)
     #Select function for answering question
-    if intent_group_question_str == 'NegativeEmotion - yes - want - problem':
+    if intent_group_question_str == "NegativeEmotion - yes - want - problem":
+        # answer_str = "นุ่มฟูเข้าใจว่าคุณคงเหนื่อยมากใช่ไหม แต่ไม่เป็นไรนะ พักบ้างก็ได้ นุ่มฟูเป็นกำลังใจให้นะ"
+        # print(answer_str)
         answer_str = follow_up_NegativeEmotion_problem(question_from_dailogflow_dict)
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
 
+    print(intent_group_question_str)
     #Build answer dict 
     answer_from_bot = {"fulfillmentText": answer_str}
     
-    #Convert dict to JSON
+    #Convert dict to JSON   
     answer_from_bot = json.dumps(answer_from_bot, indent=4) 
     
     return answer_from_bot
 
 def follow_up_NegativeEmotion_problem(problem_from_user):
-    user_problem = problem_from_user["queryResult"]
+    user_problem = problem_from_user["queryResult"]["queryText"]
+    print(user_problem)
     function_answer = "นุ่มฟูเข้าใจว่าคุณคงเหนื่อยมากใช่ไหม แต่ไม่เป็นไรนะ พักบ้างก็ได้ นุ่มฟูเป็นกำลังใจให้นะ"
     return function_answer
 
