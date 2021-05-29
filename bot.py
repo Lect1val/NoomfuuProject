@@ -14,7 +14,7 @@ from firebase_admin import firestore
 cred = credentials.Certificate("noomfuuproject-f3b69-firebase-adminsdk-mpbf0-0db0cba4ee.json")
 firebase_admin.initialize_app(cred)
 #-------------------------------------
-firebase_admin.initialize_app(cred)
+
 db = firestore.client()
 
 # Flask
@@ -66,8 +66,8 @@ def generating_answer(question_from_dailogflow_dict):
 def follow_up_NegativeEmotion_problem(input_from_user):
     user_problem = input_from_user["queryResult"]["queryText"]
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
-    db.collection('User').doc(userID'/message/problem').set({
-        content : user_problem
+    db.collection('User').document(f'{userID}/message/problem').set({
+        u'content' : {user_problem}
     })
     function_answer = "นุ่มฟูเข้าใจว่าคุณคงเหนื่อยมากใช่ไหม แต่ไม่เป็นไรนะ พักบ้างก็ได้ นุ่มฟูเป็นกำลังใจให้นะ"
     return function_answer
