@@ -49,9 +49,7 @@ def generating_answer(data_from_dailogflow):
 
     #Select function for answering question
     if intent_group_question_str == "NegativeEmotion - yes - want - problem":
-        # answer_str = "นุ่มฟูเข้าใจว่าคุณคงเหนื่อยมากใช่ไหม แต่ไม่เป็นไรนะ พักบ้างก็ได้ นุ่มฟูเป็นกำลังใจให้นะ"
-        # print(answer_str)
-        answer_str = follow_up_NegativeEmotion_problem(data_from_dailogflow)
+        answer_str = NegativeEmotion_problem(data_from_dailogflow)
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
 
     #Build answer dict 
@@ -62,13 +60,13 @@ def generating_answer(data_from_dailogflow):
     
     return answer_from_bot
 
-def follow_up_NegativeEmotion_problem(input_from_user):
+def NegativeEmotion_problem(input_from_user):
     user_problem = input_from_user["queryResult"]["queryText"]
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
     db.collection('User').document(f'{userID}/message/problem').set({
         u'content' : {user_problem}
     })
-    function_answer = "นุ่มฟูเข้าใจว่าคุณคงเหนื่อยมากใช่ไหม แต่ไม่เป็นไรนะ พักบ้างก็ได้ นุ่มฟูเป็นกำลังใจให้นะ"
+    function_answer = "เราเข้าใจความรู้สึกของเธอนะ ไม่เป็นไรนะ ลองถอยออกมาจากสิ่งที่ทำให้เครียดบ้าง เป็นกำลังใจให้เสมอนะ"
     return function_answer
 
 
