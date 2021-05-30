@@ -26,11 +26,11 @@ app = Flask(__name__)
 def MainFunction():
 
     #Getting intent from Dailogflow
-    question_from_dailogflow_raw = request.get_json(silent=True, force=True)
-    user_text = question_from_dailogflow_raw["queryResult"]
+    data_from_dailogflow_raw = request.get_json(silent=True, force=True)
+    user_text = data_from_dailogflow_raw["queryResult"]
 
     #Call generating_answer function to classify the question
-    answer_from_bot = generating_answer(question_from_dailogflow_raw)
+    answer_from_bot = generating_answer(data_from_dailogflow_raw)
     
     #Make a respond back to Dailogflow
     r = make_response(answer_from_bot)
@@ -39,22 +39,21 @@ def MainFunction():
     #return r
     return user_text
 
-def generating_answer(question_from_dailogflow_dict):
+def generating_answer(data_from_dailogflow):
     
     #Print intent that recived from dialogflow.
-    print(json.dumps(question_from_dailogflow_dict, indent=4 ,ensure_ascii=False))
+    print(json.dumps(data_from_dailogflow, indent=4 ,ensure_ascii=False))
 
     #Getting intent name form intent that recived from dialogflow.
-    intent_group_question_str = question_from_dailogflow_dict["queryResult"]["intent"]["displayName"] 
-    print(intent_group_question_str)
+    intent_group_question_str = data_from_dailogflow["queryResult"]["intent"]["displayName"] 
+
     #Select function for answering question
     if intent_group_question_str == "NegativeEmotion - yes - want - problem":
         # answer_str = "นุ่มฟูเข้าใจว่าคุณคงเหนื่อยมากใช่ไหม แต่ไม่เป็นไรนะ พักบ้างก็ได้ นุ่มฟูเป็นกำลังใจให้นะ"
         # print(answer_str)
-        answer_str = follow_up_NegativeEmotion_problem(question_from_dailogflow_dict)
+        answer_str = follow_up_NegativeEmotion_problem(data_from_dailogflow)
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
 
-    print(intent_group_question_str)
     #Build answer dict 
     answer_from_bot = {"fulfillmentText": answer_str}
     
