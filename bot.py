@@ -27,7 +27,7 @@ def MainFunction():
 
     #Getting intent from Dailogflow
     data_from_dailogflow_raw = request.get_json(silent=True, force=True)
-    user_text = data_from_dailogflow_raw["queryResult"]
+    #user_text = data_from_dailogflow_raw["queryResult"]
 
     #Call generating_answer function to classify the question
     answer_from_bot = generating_answer(data_from_dailogflow_raw)
@@ -36,8 +36,8 @@ def MainFunction():
     r = make_response(answer_from_bot)
     r.headers['Content-Type'] = 'application/json' #Setting Content Type
 
-    #return r
-    return user_text
+    return r
+    #return user_text
 
 def generating_answer(data_from_dailogflow):
     
