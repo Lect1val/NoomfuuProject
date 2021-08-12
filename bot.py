@@ -72,6 +72,12 @@ def NegativeEmotion_problem(input_from_user):
 
 
 #Flask
+
+@app.route('/assessment')
+def index():
+    return render_template('LIFF/assessment.html')
+
+    
 if __name__ == '__main__':
     app.run()
     """
