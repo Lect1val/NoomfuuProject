@@ -6,6 +6,8 @@ from flask import Flask
 from flask import request
 from flask import make_response
 
+from sentimentmodel import useSentiment
+
 #----Firebase----
 from random import randint
 import firebase_admin
@@ -69,7 +71,9 @@ def NegativeEmotion_problem(input_from_user):
     function_answer = "เราเข้าใจความรู้สึกของเธอนะ ไม่เป็นไรนะ ลองถอยออกมาจากสิ่งที่ทำให้เครียดบ้าง เป็นกำลังใจให้เสมอนะ"
     return function_answer
 
-
+def use_sentiment(word):
+    answer_function = useSentiment(word)
+    return answer_function
 
 #Flask
 
