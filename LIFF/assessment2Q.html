@@ -72,23 +72,46 @@
         <h1 style="margin-top:20%;">แบบทดสอบ</h1>
         <h3>ความเสี่ยงการเป็นโรคซึมเศร้า</h3>
         <div class="question">
-            <h2>2 สัปดาห์มานี้ <br>
-                เธอรู้สึกเศร้า หดหู่ ท้อแท้บ้างไหม</h2>
+            <h2 id="2Q"></h2>
+
+            <script>
+                var colourLoop = [
+                    '2 สัปดาห์มานี้<br>รู้สึกเบื่อ ทำอะไรก็ไม่เพลิดเพลินไหม',
+                    '2 สัปดาห์มานี้<br>รู้สึกเศร้า หดหู่ ท้อแท้บ้างไหม',
+                ];
+
+                var curNum = 0; //curNum means 'current number'
+                x = document.getElementById("2Q");
+
+                function nextFunction() {
+                    if (curNum === 1) {
+                        curNum = 0;
+                    }
+                    else {
+                        curNum++;
+                    }
+                    console.log(curNum)
+                    
+                    x.innerHTML = (colourLoop[curNum]);
+                    console.log(colourLoop[curNum])
+                }
+            </script>
+
             <div style="text-align: right;">
                 <button style="border:none; background-color: transparent;">
                     <img src="../LIFF/image/help.png" alt="Girl in a jacket" width="125" height="auto">
                 </button>
             </div>
             <div>
-                <form>
-                    <button class="answer_box" id="yes">
+                <!-- <form> -->
+                    <button class="answer_box" id="myButton" onclick="nextFunction()" name="user_ans" value="yes">
                         ใช่
                     </button>
                     <br>
-                    <button class="answer_box" id="no">
+                    <button class="answer_box" id="myButton" onclick="nextFunction()" name="user_ans" value="no">
                         ไม่ใช่
                     </button>
-                </form>
+                <!-- </form> -->
             </div>
         </div>
     </div>
