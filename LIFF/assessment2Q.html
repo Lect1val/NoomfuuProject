@@ -72,7 +72,7 @@
         <h1 style="margin-top:20%;">แบบทดสอบ</h1>
         <h3>ความเสี่ยงการเป็นโรคซึมเศร้า</h3>
         <div class="question">
-            <h2 id="2Q"></h2>
+            <h2 id="2Q">2 สัปดาห์มานี้<br>รู้สึกเบื่อ ทำอะไรก็ไม่เพลิดเพลินไหม</h2>
 
             <script>
                 var colourLoop = [
@@ -85,7 +85,8 @@
 
                 function nextFunction() {
                     if (curNum === 1) {
-                        curNum = 0;
+                        // curNum = 0;
+                        window.location.href = "./assessment9Q.html";
                     }
                     else {
                         curNum++;
