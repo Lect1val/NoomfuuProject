@@ -79,7 +79,7 @@ def use_sentiment(word):
 
 @app.route('/assessment')
 def index():
-    return render_template('LIFF/assessment.html')
+    return render_template('LIFF/assessment2Q.html')
 
     
 if __name__ == '__main__':
