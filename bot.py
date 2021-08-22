@@ -42,7 +42,7 @@ def MainFunction():
     return r
     # return user_text
 
-
+#
 def generating_answer(data_from_dailogflow):
 
     # Print intent that recived from dialogflow.
@@ -75,6 +75,15 @@ def NegativeEmotion_problem(input_from_user):
     function_answer = "เราเข้าใจความรู้สึกของเธอนะ ไม่เป็นไรนะ ลองถอยออกมาจากสิ่งที่ทำให้เครียดบ้าง เป็นกำลังใจให้เสมอนะ"
     return function_answer
 
+def is_user_exist(userID): 
+    doc_ref = db.collection(u'User').document(userID)
+    doc = doc_ref.get()
+    exist = False
+    if doc.exists:
+        exist = True
+    else:
+        exist = False
+    return exist
 
 def use_sentiment(word):
     answer_function = useSentiment(word)
