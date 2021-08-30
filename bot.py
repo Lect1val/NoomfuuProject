@@ -52,8 +52,10 @@ def generating_answer(data_from_dailogflow):
     intent_group_question_str = data_from_dailogflow["queryResult"]["intent"]["displayName"]
 
     # Select function for answering question
-    if intent_group_question_str == "NegativeEmotion - yes - want - problem":
+    if intent_group_question_str == "NegativeEmotion.yes.want.problem":
         answer_str = NegativeEmotion_problem(data_from_dailogflow)
+    if intent_group_question_str == "Default Welcome Intent":
+        answer_str = Default_Welcome_Intent(data_from_dailogflow)
     else:
         answer_str = "นุ่มฟูไม่เข้าใจ"
 
@@ -74,6 +76,28 @@ def NegativeEmotion_problem(input_from_user):
     })
     function_answer = "เราเข้าใจความรู้สึกของเธอนะ ไม่เป็นไรนะ ลองถอยออกมาจากสิ่งที่ทำให้เครียดบ้าง เป็นกำลังใจให้เสมอนะ"
     return function_answer
+
+def Default_Welcome_Intent(input_from_user):
+    userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
+    function_answer = ""
+    if is_user_exist(userID):
+        return function_answer
+    else:
+        initial_user_information(input_from_user)
+        return function_answer
+
+def initial_user_information(input_from_user):
+    userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
+    db.collection('User').document(f'{userID}').set({
+        u'lineName': "",
+        u'firstName': "", 
+        u'lastName': "",
+        u'nickName': "",
+        u'Email': "",
+        u'TelNo': "",
+        u'contactNote': ""
+    })
+    pass
 
 def is_user_exist(userID): 
     doc_ref = db.collection(u'User').document(userID)
