@@ -79,7 +79,7 @@ def NegativeEmotion_problem(input_from_user):
 
 def Default_Welcome_Intent(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
-    function_answer = ""
+    function_answer = "สวัสดีจ้า"
     if is_user_exist(userID):
         return function_answer
     else:
