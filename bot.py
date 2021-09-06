@@ -52,7 +52,7 @@ def generating_answer(data_from_dailogflow):
     intent_group_question_str = data_from_dailogflow["queryResult"]["intent"]["displayName"]
 
     # Select function for answering question
-    if intent_group_question_str == "NegativeEmotion.yes.want.problem":
+    if intent_group_question_str == "NegativeEmotion - yes - want - problem":
         answer_str = NegativeEmotion_problem(data_from_dailogflow)
     if intent_group_question_str == "Default Welcome Intent":
         answer_str = Default_Welcome_Intent(data_from_dailogflow)
