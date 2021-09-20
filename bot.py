@@ -54,10 +54,11 @@ def generating_answer(data_from_dailogflow):
     # Select function for answering question
     if intent_group_question_str == "NegativeEmotion - yes - want - problem":
         answer_str = NegativeEmotion_problem(data_from_dailogflow)
+    else: answer_str = "นุ่มฟูไม่เข้าใจ"
+    """
     if intent_group_question_str == "Default Welcome Intent":
         answer_str = Default_Welcome_Intent(data_from_dailogflow)
-    else:
-        answer_str = "นุ่มฟูไม่เข้าใจ"
+    """
 
     # Build answer dict
     answer_from_bot = {"fulfillmentText": answer_str}
