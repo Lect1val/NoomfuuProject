@@ -6,7 +6,7 @@ from flask import Flask
 from flask import request
 from flask import make_response
 
-from sentimentmodel import useSentiment
+#from sentimentmodel import useSentiment
 
 # ----Firebase----
 from random import randint
@@ -108,17 +108,11 @@ def is_user_exist(userID):
     else:
         exist = False
     return exist
-
+"""
 def use_sentiment(word):
     answer_function = useSentiment(word)
     return answer_function
-
-# Flask
-
-# @app.route('/assessment')
-# def index():
-#     return render_template('LIFF/assessment2Q.html')
-
+"""
 
 if __name__ == '__main__':
     app.run()
