@@ -54,9 +54,12 @@ def generating_answer(data_from_dailogflow):
     # Select function for answering question
     if intent_group_question_str == "NegativeEmotion - yes - want - problem":
         answer_str = NegativeEmotion_problem(data_from_dailogflow)
+        return data_from_dailogflow
+    elif intent_group_question_str == "Default Welcome Intent":
+        answer_str = Default_Welcome_Intent(data_from_dailogflow)
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
     """
-    if intent_group_question_str == "Default Welcome Intent":
+    elseif intent_group_question_str == "Default Welcome Intent":
         answer_str = Default_Welcome_Intent(data_from_dailogflow)
     """
 
@@ -75,8 +78,10 @@ def NegativeEmotion_problem(input_from_user):
     db.collection('User').document(f'{userID}/message/problem').set({
         u'content': {user_problem}
     })
-    function_answer = "เราเข้าใจความรู้สึกของเธอนะ ไม่เป็นไรนะ ลองถอยออกมาจากสิ่งที่ทำให้เครียดบ้าง เป็นกำลังใจให้เสมอนะ"
-    return function_answer
+
+    #function_answer = "เราเข้าใจความรู้สึกของเธอนะ ไม่เป็นไรนะ ลองถอยออกมาจากสิ่งที่ทำให้เครียดบ้าง เป็นกำลังใจให้เสมอนะ"
+    return input_from_user
+
 
 def Default_Welcome_Intent(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
