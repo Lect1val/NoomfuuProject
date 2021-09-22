@@ -42,7 +42,6 @@ def MainFunction():
     return r
     # return user_text
 
-#
 def generating_answer(data_from_dailogflow):
 
     # Print intent that recived from dialogflow.
@@ -57,6 +56,7 @@ def generating_answer(data_from_dailogflow):
         return data_from_dailogflow
     elif intent_group_question_str == "Default Welcome Intent":
         answer_str = Default_Welcome_Intent(data_from_dailogflow)
+        return data_from_dailogflow
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
     """
     elseif intent_group_question_str == "Default Welcome Intent":
