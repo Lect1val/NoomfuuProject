@@ -85,16 +85,16 @@ def NegativeEmotion_problem(input_from_user):
 
 def Default_Welcome_Intent(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
-    function_answer = "สวัสดีจ้า"
     if is_user_exist(userID):
-        return function_answer
+        pass
     else:
         initial_user_information(input_from_user)
-        return function_answer
+        pass
 
 def initial_user_information(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
     db.collection('User').document(f'{userID}').set({
+        u'userID': f'{userID}',
         u'lineName': "",
         u'firstName': "", 
         u'lastName': "",
