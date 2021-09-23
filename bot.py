@@ -30,7 +30,6 @@ def MainFunction():
 
     # Getting intent from Dailogflow
     data_from_dailogflow_raw = request.get_json(silent=True, force=True)
-    #user_text = data_from_dailogflow_raw["queryResult"]
 
     # Call generating_answer function to classify the question
     answer_from_bot = generating_answer(data_from_dailogflow_raw)
@@ -40,7 +39,6 @@ def MainFunction():
     r.headers['Content-Type'] = 'application/json'  # Setting Content Type
 
     return r
-    # return user_text
 
 def generating_answer(data_from_dailogflow):
 
@@ -58,10 +56,6 @@ def generating_answer(data_from_dailogflow):
         answer_str = Default_Welcome_Intent(data_from_dailogflow)
         return data_from_dailogflow
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
-    """
-    elseif intent_group_question_str == "Default Welcome Intent":
-        answer_str = Default_Welcome_Intent(data_from_dailogflow)
-    """
 
     # Build answer dict
     answer_from_bot = {"fulfillmentText": answer_str}
@@ -79,7 +73,6 @@ def NegativeEmotion_problem(input_from_user):
         u'content': {user_problem}
     })
 
-    #function_answer = "เราเข้าใจความรู้สึกของเธอนะ ไม่เป็นไรนะ ลองถอยออกมาจากสิ่งที่ทำให้เครียดบ้าง เป็นกำลังใจให้เสมอนะ"
     return input_from_user
 
 
