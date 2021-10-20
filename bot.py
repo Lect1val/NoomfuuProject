@@ -71,12 +71,6 @@ def NegativeEmotion_problem(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
     doc_ref = db.collection(u'User').document(userID).collection("message").order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
     oldMessage = doc_ref.get()
-    data = {
-        u'messageid': "",
-        u'content': {user_problem},
-        u'emotion': "",
-        u'timestamp': firestore.SERVER_TIMESTAMP
-    }
     if doc_ref.exists:
         messageID = doc_ref.get("messageid")
         messageID += 1
@@ -87,7 +81,13 @@ def NegativeEmotion_problem(input_from_user):
             u'timestamp': firestore.SERVER_TIMESTAMP
     })
     elif doc_ref.exists != True:
-        db.collection('User').document(f'{userID}/message/1').set(data)
+        messageID = 1
+        db.collection('User').document(f'{userID}/message/1').set({
+            u'messageid': {messageID},
+            u'content': {user_problem},
+            u'emotion': "",
+            u'timestamp': firestore.SERVER_TIMESTAMP
+    })
     return input_from_user
 
 
