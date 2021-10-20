@@ -52,13 +52,11 @@ def generating_answer(data_from_dailogflow):
     if intent_group_question_str == "NegativeEmotion - yes - want - problem":
         answer_str = NegativeEmotion_problem(data_from_dailogflow)
         return data_from_dailogflow
-    else: answer_str = "นุ่มฟูไม่เข้าใจ"
-    """
     elif intent_group_question_str == "Default Welcome Intent":
         answer_str = Default_Welcome_Intent(data_from_dailogflow)
         return data_from_dailogflow
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
-    """
+
     # Build answer dict
     answer_from_bot = {"fulfillmentText": answer_str}
 
@@ -71,25 +69,10 @@ def generating_answer(data_from_dailogflow):
 def NegativeEmotion_problem(input_from_user):
     user_problem = input_from_user["queryResult"]["queryText"]
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
-    doc_ref = db.collection(u'User').document(userID).collection("message").order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
-    oldMessage = doc_ref.get()
-    if doc_ref.exists:
-        messageID = doc_ref.get("messageid")
-        messageID += 1
-        db.collection('User').document(f'{userID}/message/{messageID}').set({
-            u'messageid': {messageID},
-            u'content': {user_problem},
-            u'emotion': "",
-            u'timestamp': firestore.SERVER_TIMESTAMP
+    db.collection('User').document(f'{userID}/message/problem').set({
+        u'content': {user_problem}
     })
-    else:
-        messageID = 1
-        db.collection('User').document(f'{userID}/message/1').set({
-            u'messageid': {messageID},
-            u'content': {user_problem},
-            u'emotion': "",
-            u'timestamp': firestore.SERVER_TIMESTAMP
-    })
+
     return input_from_user
 
 
