@@ -69,10 +69,25 @@ def generating_answer(data_from_dailogflow):
 def NegativeEmotion_problem(input_from_user):
     user_problem = input_from_user["queryResult"]["queryText"]
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
-    db.collection('User').document(f'{userID}/message/problem').set({
-        u'content': {user_problem}
+    doc_ref = db.collection(u'User').document(userID).collection("message").order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
+    oldMessage = doc_ref.get()
+    data = {
+        u'messageid': "",
+        u'content': {user_problem},
+        u'emotion': "",
+        u'timestamp': firestore.SERVER_TIMESTAMP
+    }
+    if doc_ref.exists:
+        messageID = doc_ref.get("messageid")
+        messageID += 1
+        db.collection('User').document(f'{userID}/message/{messageID}').set({
+            u'messageid': {messageID},
+            u'content': {user_problem},
+            u'emotion': "",
+            u'timestamp': firestore.SERVER_TIMESTAMP
     })
-
+    elif doc_ref.exists != True:
+        db.collection('User').document(f'{userID}/message/1').set(data)
     return input_from_user
 
 
