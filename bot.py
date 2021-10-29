@@ -209,20 +209,6 @@ def getUserID(input_from_user):
     elif m3list is None:
         print("mlist is empty\n")
 
-    # for x in user4.stream():
-    #     if not x is None:
-    #         print(x.to_dict())
-    #     else:
-    #         print("user4's message is empty")   
-
-    #print(messsages[0])
-
-    """
-    collections = db.collection('User').document('user2').collections()
-    for collection in collections:
-        for doc in collection.stream():
-            print(f'{doc.id} => {doc.to_dict()}')
-    """
     return "tested"
 
 
