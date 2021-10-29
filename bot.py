@@ -91,6 +91,7 @@ def NegativeEmotion_problem(input_from_user):
 
     if message_list is not None:
         messageID += 1
+        messageID = str(messageID)
         db.collection('User').document(f'{userID}/message/{messageID}').set({
             u'messageID': messageID,
             u'content': user_problem,
