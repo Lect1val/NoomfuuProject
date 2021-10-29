@@ -72,35 +72,43 @@ def generating_answer(data_from_dailogflow):
 def NegativeEmotion_problem(input_from_user):
     user_problem = input_from_user["queryResult"]["queryText"]
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
-    doc_ref = db.collection(u'User').document(f'{userID}').collection(u'message').order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
-    recentMessage = doc_ref.get()
-    """
-    if recentMessage.exists:
-        recentMessageID = doc_ref.get("messageid")
-        messageID = recentMessageID + 1
+    messages = []
+    messages = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
+    for doc in messages.stream():
+        message_list = []
+        messageID = int(doc.get('messageID'))
+        message_list.append({
+            u'messageid': doc.get('messageID'),
+            u'content': doc.get('content'),
+            u'emotion': doc.get('emotion'),
+            u'timestamp': doc.get('timestamp')
+        }) 
+    
+    try:
+        message_list
+    except NameError:
+        message_list = None
+
+    if message_list is not None:
+        messageID += 1
         db.collection('User').document(f'{userID}/message/{messageID}').set({
-            u'messageid': {messageID},
-            u'content': {user_problem},
+            u'messageID': messageID,
+            u'content': user_problem,
             u'emotion': "",
             u'timestamp': firestore.SERVER_TIMESTAMP
-    })
-    elif:
-        messageID = 1
+        })
+        pass
+    elif message_list is None:
+        messageID = "1"
         db.collection('User').document(f'{userID}/message/1').set({
-            u'messageid': {messageID},
-            u'content': {user_problem},
+            u'messageID': messageID,
+            u'content': user_problem,
             u'emotion': "",
             u'timestamp': firestore.SERVER_TIMESTAMP
-    })
-    """
-    messageID = "1"
-    db.collection('User').document(f'{userID}/message/1').set({
-        u'messageid': messageID,
-        u'content': user_problem,
-        u'emotion': "",
-        u'timestamp': firestore.SERVER_TIMESTAMP
-    })
-    return input_from_user
+        })
+        pass
+    
+
 
 
 def Default_Welcome_Intent(input_from_user):
@@ -135,41 +143,87 @@ def is_user_exist(userID):
         exist = False
     return exist
 
-# def getUserID(input_from_user):
-#     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
-#     """
-#     doc_ref = db.collection(u'User').document(f'{userID}').collection(u'message')
-#     query = doc_ref.order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
-#     result = query.get()
-#     print(result)
-#     """
-#     #doc_ref = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
-#     #doc = doc_ref.get()
+def getUserID(input_from_user):
+    userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
+    #doc_ref = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
+    #doc = doc_ref.get()
+    doc_ref = []
+    doc_ref = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageid', direction=firestore.Query.DESCENDING).limit(1)
+    user4 = []
+    user4 = db.collection(u'User').document(f'user4').collection(u'message').order_by(u'messageid', direction=firestore.Query.DESCENDING).limit(1)
+    for doc in doc_ref.stream():
+        if not doc_ref is None:
+            print(f'in for loop => {doc.to_dict()}\n')  
+            id = doc.get('messageid')
+            print(f'{id}\n')
+        elif doc_ref is None:
+            print("My message is empty\n")
 
-#     doc_ref = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageid', direction=firestore.Query.DESCENDING).limit(1)
-#     messsages = []
-#     for doc in doc_ref.stream():
-#         print(f'in for loop => {doc.to_dict()}\n')
-#         print(f'messageID = {doc.messageid}')
-#         #messsages.append()
+        mlist = []
+        mlist.append({
+            u'messageid': doc.get('messageid'),
+            u'content': doc.get('content'),
+            u'emotion': doc.get('emotion'),
+            u'timestamp': doc.get('timestamp')
+        })
+        print(f'm1 appended list = {mlist[0]}\n')
+
+        m2list = []
+        m2list.append(db.collection(u'User').document(userID).collection(u'message').order_by(u'messageid', direction=firestore.Query.DESCENDING).limit(1))
+        print(f'm2 appended list = {m2list[0]}\n')
+
+
+    for docc in user4.stream():
+        print("test")
+        m3list = []
+        m3list.append({
+            u'messageid': docc.get('messageid'),
+            u'content': docc.get('content'),
+            u'emotion': docc.get('emotion'),
+            u'timestamp': docc.get('timestamp')
+        })
+        print(f'm1 appended list = {m3list[0]}\n')
+
+    try:
+        mlist
+    except NameError:
+        mlist = None
+
+    try:
+        m3list
+    except NameError:
+        m3list = None
     
-#     #print(messsages[0])
+    if mlist is None:
+        print("mlist is empty\n")
+    else:
+        print(f'm1 appended list = {mlist[0]}\n')
+    
+    # if mlist is not None:
+    #     print(f'm1 appended list = {mlist[0]} (is not)\n')
+    # elif mlist is None:
+    #     print("mlist is empty\n")
+    
+    if m3list is not None:
+        print(f'm3 appended list = {m3list[0]} (is not)\n')
+    elif m3list is None:
+        print("mlist is empty\n")
 
+    # for x in user4.stream():
+    #     if not x is None:
+    #         print(x.to_dict())
+    #     else:
+    #         print("user4's message is empty")   
 
-#     """
-#     collections = db.collection('User').document('user2').collections()
-#     for collection in collections:
-#         for doc in collection.stream():
-#             print(f'{doc.id} => {doc.to_dict()}')
-#     """
+    #print(messsages[0])
 
-#     """
-#     if doc.exists:
-#         print(f'Document data: {doc.to_dict()}')
-#     else:
-#         print(u'No such document!')
-#     """
-#     return "tested"
+    """
+    collections = db.collection('User').document('user2').collections()
+    for collection in collections:
+        for doc in collection.stream():
+            print(f'{doc.id} => {doc.to_dict()}')
+    """
+    return "tested"
 
 
 
