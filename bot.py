@@ -22,7 +22,6 @@ db = firestore.client()
 # Flask
 app = Flask(__name__)
 
-
 @app.route('/', methods=['POST'])  # Using post as a method
 # @app.route('/')
 def MainFunction():
@@ -66,7 +65,6 @@ def generating_answer(data_from_dailogflow):
     answer_from_bot = json.dumps(answer_from_bot, indent=4)
 
     return answer_from_bot
-
 
 def NegativeEmotion_problem(input_from_user):
     user_problem = input_from_user["queryResult"]["queryText"]
@@ -114,9 +112,6 @@ def NegativeEmotion_problem(input_from_user):
         })
         pass
     
-
-
-
 def Default_Welcome_Intent(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
     if is_user_exist(userID):
