@@ -4,6 +4,9 @@ import pickle
 import codecs
 from itertools import chain
 
+classifier_f = open("Demonaivebayes.pickle", "rb")
+classifier = pickle.load(classifier_f)
+classifier_f.close()
 
 # pos.txt
 with codecs.open('pos.txt', 'r', "utf-8") as f:
@@ -24,23 +27,17 @@ neg1=['neg']*len(listneg)
 training_data = list(zip(listpos,pos1)) + list(zip(listneg,neg1)) 
 
 vocabulary = set(chain(*[word_tokenize(i[0].lower()) for i in training_data]))
-feature_set = [({i:(i in word_tokenize(sentence.lower())) for i in vocabulary},tag) for sentence, tag in training_data]
 
-classifier = nbc.train(feature_set)
+def useSentiment(Message):
+  while True:
+      # test_sentence = input('\nข้อความ : ')
+      featurized_test_sentence = {i:(i in word_tokenize(Message.lower())) for i in vocabulary}
+      emotion = classifier.classify(featurized_test_sentence)
+      print("test_sentiment:",Message)
+      print("tag:",emotion) # ใช้โมเดลที่ train ประมวลผล
+      return emotion
+      break
 
-
-print('start')
-
-#save model
-while True:
-  save_classifier = open("Demonaivebayes.pickle","wb")
-  pickle.dump(classifier, save_classifier)
-  save_classifier.close()
-  break
-  # Message = input('\nข้อความ : ')
-  # useSentiment(Message)
-
-print('end')
-
-
-
+# while True:
+#   Message = input('\nข้อความ : ')
+#   useSentiment(Message)

@@ -34,7 +34,7 @@ def useSentiment(Message):
   while True:
       # test_sentence = input('\nข้อความ : ')
       featurized_test_sentence = {i:(i in word_tokenize(Message.lower())) for i in vocabulary}
-      print("test_sent:",Message)
+      print("test_sentiment:",Message)
       print("tag:",classifier.classify(featurized_test_sentence)) # ใช้โมเดลที่ train ประมวลผล
       break
 
