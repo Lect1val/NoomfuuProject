@@ -53,9 +53,6 @@ def generating_answer(data_from_dailogflow):
     elif intent_group_question_str == "Default Welcome Intent":
         answer_str = Default_Welcome_Intent(data_from_dailogflow)
         return data_from_dailogflow
-    elif intent_group_question_str == "getUserID":
-        answer_str = getUserID(data_from_dailogflow)
-        return data_from_dailogflow
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
 
     # Build answer dict
@@ -143,86 +140,6 @@ def is_user_exist(userID):
     else:
         exist = False
     return exist
-
-"""
-def getUserID(input_from_user):
-    userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
-    #doc_ref = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
-    #doc = doc_ref.get()
-    doc_ref = []
-    doc_ref = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageid', direction=firestore.Query.DESCENDING).limit(1)
-    user4 = []
-    user4 = db.collection(u'User').document(f'user4').collection(u'message').order_by(u'messageid', direction=firestore.Query.DESCENDING).limit(1)
-    for doc in doc_ref.stream():
-        if not doc_ref is None:
-            print(f'in for loop => {doc.to_dict()}\n')  
-            id = doc.get('messageid')
-            print(f'{id}\n')
-        elif doc_ref is None:
-            print("My message is empty\n")
-
-        mlist = []
-        mlist.append({
-            u'messageid': doc.get('messageid'),
-            u'content': doc.get('content'),
-            u'emotion': doc.get('emotion'),
-            u'timestamp': doc.get('timestamp')
-        })
-        print(f'm1 appended list = {mlist[0]}\n')
-
-        m2list = []
-        m2list.append(db.collection(u'User').document(userID).collection(u'message').order_by(u'messageid', direction=firestore.Query.DESCENDING).limit(1))
-        print(f'm2 appended list = {m2list[0]}\n')
-
-
-    for docc in user4.stream():
-        print("test")
-        m3list = []
-        m3list.append({
-            u'messageid': docc.get('messageid'),
-            u'content': docc.get('content'),
-            u'emotion': docc.get('emotion'),
-            u'timestamp': docc.get('timestamp')
-        })
-        print(f'm1 appended list = {m3list[0]}\n')
-
-    try:
-        mlist
-    except NameError:
-        mlist = None
-
-    try:
-        m3list
-    except NameError:
-        m3list = None
-    
-    if mlist is None:
-        print("mlist is empty\n")
-    else:
-        print(f'm1 appended list = {mlist[0]}\n')
-    
-    # if mlist is not None:
-    #     print(f'm1 appended list = {mlist[0]} (is not)\n')
-    # elif mlist is None:
-    #     print("mlist is empty\n")
-    
-    if m3list is not None:
-        print(f'm3 appended list = {m3list[0]} (is not)\n')
-    elif m3list is None:
-        print("mlist is empty\n")
-
-    result = UseSentiment.useSentiment("เหนื่อย")
-    print(f'{str(result)}\n')
-
-    analyzed_word = str(UseSentiment.useSentiment(str("เหนื่อย")))
-    if analyzed_word == "pos":
-        emotion = "1"
-    elif analyzed_word == "neg":
-        emotion = "-1"
-    print(emotion)
-
-    return "tested"
-"""
 
 if __name__ == '__main__':
     app.run()
