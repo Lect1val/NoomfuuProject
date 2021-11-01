@@ -5,8 +5,7 @@ import os
 from flask import Flask
 from flask import request
 from flask import make_response
-
-#from sentimentmodel import useSentiment
+import UseSentiment
 
 # ----Firebase----
 from random import randint
@@ -89,13 +88,19 @@ def NegativeEmotion_problem(input_from_user):
     except NameError:
         message_list = None
 
+    analyzed_word = str(UseSentiment.useSentiment(str(user_problem)))
+    if analyzed_word == "pos":
+        emotion = "1"
+    elif analyzed_word == "neg":
+        emotion = "-1"
+
     if message_list is not None:
         messageID += 1
         messageID = str(messageID)
         db.collection('User').document(f'{userID}/message/{messageID}').set({
             u'messageID': messageID,
             u'content': user_problem,
-            u'emotion': "",
+            u'emotion': emotion,
             u'timestamp': firestore.SERVER_TIMESTAMP
         })
         pass
@@ -104,7 +109,7 @@ def NegativeEmotion_problem(input_from_user):
         db.collection('User').document(f'{userID}/message/1').set({
             u'messageID': messageID,
             u'content': user_problem,
-            u'emotion': "",
+            u'emotion': emotion,
             u'timestamp': firestore.SERVER_TIMESTAMP
         })
         pass
@@ -144,6 +149,7 @@ def is_user_exist(userID):
         exist = False
     return exist
 
+"""
 def getUserID(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
     #doc_ref = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
@@ -210,14 +216,17 @@ def getUserID(input_from_user):
     elif m3list is None:
         print("mlist is empty\n")
 
+    result = UseSentiment.useSentiment("เหนื่อย")
+    print(f'{str(result)}\n')
+
+    analyzed_word = str(UseSentiment.useSentiment(str("เหนื่อย")))
+    if analyzed_word == "pos":
+        emotion = "1"
+    elif analyzed_word == "neg":
+        emotion = "-1"
+    print(emotion)
+
     return "tested"
-
-
-
-"""
-def use_sentiment(word):
-    answer_function = useSentiment(word)
-    return answer_function
 """
 
 if __name__ == '__main__':
