@@ -55,6 +55,9 @@ def generating_answer(data_from_dailogflow):
         return data_from_dailogflow
     elif intent_group_question_str == "addJournal.content":
         answer_str = add_journal(data_from_dailogflow)
+    elif intent_group_question_str == "getPersonalInformation.confirm.data":
+        answer_str = get_Personal_Information(data_from_dailogflow)
+        return data_from_dailogflow
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
 
     # Build answer dict
@@ -126,7 +129,7 @@ def initial_user_information(input_from_user):
         u'lineName': "",
         u'firstName': "", 
         u'lastName': "",
-        u'nickName': "",
+        u'nickname': "",
         u'Email': "",
         u'TelNo': "",
         u'contactNote': ""
@@ -190,6 +193,35 @@ def add_journal(input_from_user):
             u'timestamp': firestore.SERVER_TIMESTAMP
         })
         return answer_str
+
+def get_Personal_Information(input_from_user):
+    userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
+    first_name = input_from_user["queryResult"]["parameters"]["firstName"]
+    last_name = input_from_user["queryResult"]["parameters"]["lastName"]
+    email = input_from_user["queryResult"]["parameters"]["email"]
+    telNo = input_from_user["queryResult"]["parameters"]["telNo"]
+    nickname = input_from_user["queryResult"]["parameters"]["nickname"]
+    
+    user_doc = db.collection(u'User').document(userID)
+    user_data = user_doc.get()
+    contactNote = user_data.get('contactNote')
+
+    try:
+        contactNote
+    except NameError:
+        contactNote = ""
+
+    db.collection('User').document(f'{userID}').set({
+        u'userID': userID,
+        u'lineName': "",
+        u'firstName': first_name, 
+        u'lastName': last_name,
+        u'nickname': nickname,
+        u'Email': email,
+        u'TelNo': telNo,
+        u'contactNote': contactNote
+    })
+    pass
 
 if __name__ == '__main__':
     app.run()
