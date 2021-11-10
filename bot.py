@@ -5,7 +5,15 @@ import os
 from flask import Flask
 from flask import request
 from flask import make_response
+
+# ----Sentiment Analyze----
 import UseSentiment
+
+# ----Line SDK----
+from linebot import LineBotApi
+from linebot.exceptions import LineBotApiError
+
+line_bot_api = LineBotApi('9UwRYnrTQskyPOTIuEj0gv8d6YX8LPpKkh2JYOE1KqEDvHWXbXGJhFOHbBl+Ynuv5CUcBne57zh3QKNLBbHvEiYkSksux4jAGSuGwswbTSvKvBVQ88IznUuHBoBaheC56eclrcNUP7Fxw0jbHGCF/wdB04t89/1O/w1cDnyilFU=')
 
 # ----Firebase----
 from random import randint
@@ -124,9 +132,10 @@ def Default_Welcome_Intent(input_from_user):
 
 def initial_user_information(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
+    lineName = get_line_displayName(userID)
     db.collection('User').document(f'{userID}').set({
         u'userID': userID,
-        u'lineName': "",
+        u'lineName': lineName,
         u'firstName': "", 
         u'lastName': "",
         u'nickname': "",
@@ -205,7 +214,7 @@ def get_Personal_Information(input_from_user):
     user_doc = db.collection(u'User').document(userID)
     user_data = user_doc.get()
     contactNote = user_data.get('contactNote')
-
+    lineName = get_line_displayName(userID)
     try:
         contactNote
     except NameError:
@@ -213,7 +222,7 @@ def get_Personal_Information(input_from_user):
 
     db.collection('User').document(f'{userID}').set({
         u'userID': userID,
-        u'lineName': "",
+        u'lineName': lineName,
         u'firstName': first_name, 
         u'lastName': last_name,
         u'nickname': nickname,
@@ -222,6 +231,18 @@ def get_Personal_Information(input_from_user):
         u'contactNote': contactNote
     })
     pass
+
+def get_line_displayName(UserID):
+    try:
+        profile = line_bot_api.get_profile(f'{UserID}')
+    except LineBotApiError as e:
+        profile = ""
+        return ""
+    
+    profile_dict = json.loads(str(profile))
+    name = profile_dict['displayName']
+
+    return str(name)
 
 if __name__ == '__main__':
     app.run()
