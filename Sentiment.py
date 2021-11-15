@@ -37,8 +37,8 @@ while True:
   pickle.dump(classifier, save_classifier)
   save_classifier.close()
   break
-  # Message = input('\nข้อความ : ')
-  # useSentiment(Message)
+  Message = input('\nข้อความ : ')
+  useSentiment(Message)
 
 print('end')
 
