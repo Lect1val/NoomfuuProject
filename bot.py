@@ -66,6 +66,8 @@ def generating_answer(data_from_dailogflow):
     elif intent_group_question_str == "getPersonalInformation.confirm.data":
         answer_str = get_Personal_Information(data_from_dailogflow)
         return data_from_dailogflow
+    elif intent_group_question_str == "ChatWithNoomFuu.chat":
+        answer_str = Chat_With_NoomFuu(data_from_dailogflow)
     else: answer_str = "นุ่มฟูไม่เข้าใจ"
 
     # Build answer dict
@@ -104,18 +106,17 @@ def NegativeEmotion_problem(input_from_user):
 
     if message_list is not None:
         messageID += 1
-        messageID = str(messageID)
         db.collection('User').document(f'{userID}/message/{messageID}').set({
-            u'messageID': messageID,
+            u'messageID': int(messageID),
             u'content': user_problem,
             u'emotion': emotion,
             u'timestamp': firestore.SERVER_TIMESTAMP
         })
         pass
     elif message_list is None:
-        messageID = "1"
-        db.collection('User').document(f'{userID}/message/1').set({
-            u'messageID': messageID,
+        messageID = 1
+        db.collection('User').document(f'{userID}/message/{messageID}').set({
+            u'messageID': int(messageID),
             u'content': user_problem,
             u'emotion': emotion,
             u'timestamp': firestore.SERVER_TIMESTAMP
@@ -185,18 +186,17 @@ def add_journal(input_from_user):
 
     if journal_list is not None:
         journalID += 1
-        journalID = str(journalID)
         db.collection('User').document(f'{userID}/journal/{journalID}').set({
-            u'journalID': journalID,
+            u'journalID': int(journalID),
             u'content': user_journal,
             u'emotion': emotion,
             u'timestamp': firestore.SERVER_TIMESTAMP
         })
         return answer_str
     elif journal_list is None:
-        journalID = "1"
-        db.collection('User').document(f'{userID}/journal/1').set({
-            u'journalID': journalID,
+        journalID = 1
+        db.collection('User').document(f'{userID}/journal/{journalID}').set({
+            u'journalID': int(journalID),
             u'content': user_journal,
             u'emotion': emotion,
             u'timestamp': firestore.SERVER_TIMESTAMP
@@ -231,6 +231,53 @@ def get_Personal_Information(input_from_user):
         u'contactNote': contactNote
     })
     pass
+
+def Chat_With_NoomFuu(input_from_user):
+    userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
+    user_text = input_from_user["queryResult"]["queryText"]
+    messages = []
+    messages = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
+    for doc in messages.stream():
+        message_list = []
+        messageID = int(doc.get('messageID'))
+        message_list.append({
+            u'messageid': doc.get('messageID'),
+            u'content': doc.get('content'),
+            u'emotion': doc.get('emotion'),
+            u'timestamp': doc.get('timestamp')
+        }) 
+    
+    try:
+        message_list
+    except NameError:
+        message_list = None
+    
+    analyzed_word = str(UseSentiment.useSentiment(str(user_text)))
+    if analyzed_word == "pos":
+        emotion = "1"
+        answer_str = " ดูเหมือนจะกำลังรู้สึกดีอยู่เลยใช่ไหม เยี่ยมมากๆเลย ถ้าหากอยากเล่าให้นุ่มฟูฟังเพิ่มก็กดที่ บันทึก Journal ที่ด้านล่างได้นะ"
+    elif analyzed_word == "neg":
+        emotion = "-1"
+        answer_str = "เธอรู้สึกไม่ดีอยู่หรือเปล่า ถ้าไม่สบายใจละก็สามารถพิมพ์ ขอกำลังใจ ให้นุ่มฟูช่วยปลอบหรือบอกนุ่มฟูมาว่ารู้สึกแย่เพื่อที่จะเล่าเพิ่มเติมได้นะคะ"
+
+    if message_list is not None:
+        messageID += 1
+        db.collection('User').document(f'{userID}/message/{messageID}').set({
+            u'messageID': int(messageID),
+            u'content': user_text,
+            u'emotion': emotion,
+            u'timestamp': firestore.SERVER_TIMESTAMP
+        })
+    elif message_list is None:
+        messageID = 1
+        db.collection('User').document(f'{userID}/message/{messageID}').set({
+            u'messageID': int(messageID),
+            u'content': user_text,
+            u'emotion': emotion,
+            u'timestamp': firestore.SERVER_TIMESTAMP
+        })
+    
+    return answer_str
 
 def get_line_displayName(UserID):
     try:
