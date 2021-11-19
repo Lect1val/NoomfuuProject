@@ -9,5 +9,5 @@ Noomfuuproject is a chatbot backend and to be fullfillment of Dialogflow agent
 
 ```bash
 pip install -r requirements.txt
-python productpage.py 9080
+python bot.py
 ```
