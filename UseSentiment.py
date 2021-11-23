@@ -38,6 +38,6 @@ def useSentiment(Message):
       print("tag:",classifier.classify(featurized_test_sentence)) # ใช้โมเดลที่ train ประมวลผล
       break
 
-while True:
-  Message = input('\nข้อความ : ')
-  useSentiment(Message)
+# while True:
+#   Message = input('\nข้อความ : ')
+#   useSentiment(Message)
