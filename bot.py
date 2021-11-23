@@ -165,7 +165,7 @@ def add_journal(input_from_user):
         journal_list = []
         journalID = int(doc.get('journalID'))
         journal_list.append({
-            u'messageid': doc.get('journalID'),
+            u'journalID': doc.get('journalID'),
             u'content': doc.get('content'),
             u'emotion': doc.get('emotion'),
             u'timestamp': doc.get('timestamp')
@@ -183,6 +183,41 @@ def add_journal(input_from_user):
     elif analyzed_word == "neg":
         emotion = "-1"
         answer_str = "ดูเหมือนจะไม่ใช่เรื่องดีเท่าไรเลย ไม่เป็นไรนะคะ สักวันหนึ่งต้องมีเรื่องดี ๆ เกิดขึ้นแน่นอน"
+        messages = []
+        messages = db.collection(u'User').document(userID).collection(u'message').order_by(u'messageID', direction=firestore.Query.DESCENDING).limit(1)
+        for doc in messages.stream():
+            message_list = []
+            messageID = int(doc.get('messageID'))
+            message_list.append({
+                u'messageid': doc.get('messageID'),
+                u'content': doc.get('content'),
+                u'emotion': doc.get('emotion'),
+                u'timestamp': doc.get('timestamp')
+            }) 
+
+        try:
+            message_list
+        except NameError:
+            message_list = None
+            
+        if message_list is not None:
+            messageID += 1
+            db.collection('User').document(f'{userID}/message/{messageID}').set({
+                u'messageID': int(messageID),
+                u'content': user_journal,
+                u'emotion': emotion,
+                u'timestamp': firestore.SERVER_TIMESTAMP
+            })
+            return answer_str
+        elif message_list is None:
+            messageID = 1
+            db.collection('User').document(f'{userID}/message/{messageID}').set({
+                u'messageID': int(messageID),
+                u'content': user_journal,
+                u'emotion': emotion,
+                u'timestamp': firestore.SERVER_TIMESTAMP
+            })
+            return answer_str
 
     if journal_list is not None:
         journalID += 1
