@@ -219,6 +219,25 @@ def add_journal(input_from_user):
             })
             return answer_str
 
+    if journal_list is not None:
+        journalID += 1
+        db.collection('User').document(f'{userID}/journal/{journalID}').set({
+            u'journalID': int(journalID),
+            u'content': user_journal,
+            u'emotion': emotion,
+            u'timestamp': firestore.SERVER_TIMESTAMP
+        })
+        return answer_str
+    elif journal_list is None:
+        journalID = 1
+        db.collection('User').document(f'{userID}/journal/{journalID}').set({
+            u'journalID': int(journalID),
+            u'content': user_journal,
+            u'emotion': emotion,
+            u'timestamp': firestore.SERVER_TIMESTAMP
+        })
+        return answer_str
+
 def get_Personal_Information(input_from_user):
     userID = input_from_user["originalDetectIntentRequest"]["payload"]["data"]["source"]["userId"]
     first_name = input_from_user["queryResult"]["parameters"]["firstName"]
