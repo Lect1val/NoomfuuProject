@@ -31,23 +31,14 @@ classifier = nbc.train(feature_set)
 
 print('start')
 
-def useSentiment(Message):
-  while True:
-      # test_sentence = input('\nข้อความ : ')
-      featurized_test_sentence = {i:(i in word_tokenize(Message.lower())) for i in vocabulary}
-      print("test_sent:",Message)
-      print("tag:",classifier.classify(featurized_test_sentence)) # ใช้โมเดลที่ train ประมวลผล
-      break
-
-
 #save model
 while True:
   save_classifier = open("Demonaivebayes.pickle","wb")
   pickle.dump(classifier, save_classifier)
   save_classifier.close()
   break
-  # Message = input('\nข้อความ : ')
-  # useSentiment(Message)
+  Message = input('\nข้อความ : ')
+  useSentiment(Message)
 
 print('end')
 

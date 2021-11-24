@@ -28,14 +28,14 @@ training_data = list(zip(listpos,pos1)) + list(zip(listneg,neg1))
 
 vocabulary = set(chain(*[word_tokenize(i[0].lower()) for i in training_data]))
 
-print('start')
-
 def useSentiment(Message):
   while True:
       # test_sentence = input('\nข้อความ : ')
       featurized_test_sentence = {i:(i in word_tokenize(Message.lower())) for i in vocabulary}
-      print("test_sent:",Message)
-      print("tag:",classifier.classify(featurized_test_sentence)) # ใช้โมเดลที่ train ประมวลผล
+      emotion = classifier.classify(featurized_test_sentence)
+      print("test_sentiment:",Message)
+      print("tag:",emotion) # ใช้โมเดลที่ train ประมวลผล
+      return emotion
       break
 
 # while True:
