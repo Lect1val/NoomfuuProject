@@ -8,7 +8,7 @@ Noomfuuproject is use as fullfillment of Dialogflow agent for LINE application
 
 * Python 3.8.8  
 * Firebase  
-** Firebase credential json file
+  - Firebase credential json file
 
 ```bash
 pip install -r requirements.txt
