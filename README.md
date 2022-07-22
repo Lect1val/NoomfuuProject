@@ -1,6 +1,6 @@
 # NoomfuuProject
 Noomfuuproject is a chatbot backend that has been developed in python  
-Noomfuuproject is use as fullfillment of Dialogflow agent for LINE application
+Noomfuuproject is use as fullfillment of Dialogflow agent for LINE application  
 Additional link for project description: https://seniorproject.sit.kmutt.ac.th/showproject/IT61-BU34
 ## How to run NoomfuuProject
 
