@@ -14,3 +14,6 @@ portfolio of this project: https://seniorproject.sit.kmutt.ac.th/showproject/IT6
 pip install -r requirements.txt
 python bot.py
 ```
+### FYI
+* all of key in the code are example that was revoked
+* should get key from the env or config instead of hard coding
